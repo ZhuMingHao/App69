@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -32,7 +34,8 @@ namespace App69
         public MainPage()
         {
             this.InitializeComponent();
-
+            ViewModel.ToDoName = "Doooo";
+            ViewModel.IstErledigt = false;
         }
 
 
@@ -80,4 +83,43 @@ namespace App69
 
         }
     }
+
+    public class ToDoViewModel : INotifyPropertyChanged
+    {
+        public string ToDoName { get; set; }
+        private bool _isErledigt;
+
+        public bool IstErledigt
+        {
+            get
+            {
+                return _isErledigt;
+            }
+            set
+            {
+                _isErledigt = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    public class BoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return (bool)value == true ? TextDecorations.Strikethrough : TextDecorations.None;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
+

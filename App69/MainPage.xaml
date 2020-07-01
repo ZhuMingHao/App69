@@ -10,8 +10,14 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d"
     >
-
+    <Page.DataContext>
+        <local:ToDoViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+    <Page.Resources>
+        <local:BoolConverter x:Key="BoolConverter" />
+    </Page.Resources>
     <Grid x:Name="RootGrid">
+       
         <TextBlock
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
@@ -43,7 +49,26 @@
             Click="bookmarkBtn_Click"
             Content="HL"
             />
-        <RichEditBox Height="100" x:Name="REB" Visibility="Collapsed"/>
-        <ListView x:Name="MyListView" Loaded="ListView_Loaded" Height="400"/>
+        <RichEditBox
+            x:Name="REB"
+            Height="100"
+            Visibility="Collapsed"
+            />
+        <ListView
+            x:Name="MyListView"
+            Height="400"
+            Loaded="ListView_Loaded"
+            />
+
+        <CheckBox
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsChecked="{Binding IstErledigt, Mode=TwoWay}"
+            >
+            <TextBlock>
+                <Run Text="{Binding ToDoName}" TextDecorations="{Binding IstErledigt, Converter={StaticResource BoolConverter}, Mode=TwoWay}" />
+            </TextBlock>
+        </CheckBox>
+
     </Grid>
 </Page>
